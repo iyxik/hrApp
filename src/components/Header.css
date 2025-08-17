@@ -12,6 +12,16 @@
   text-align: center;
 }
 
+.app-title-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.app-title-link:hover .app-title {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
 .app-title {
   font-size: 3rem;
   font-weight: 700;
@@ -27,6 +37,39 @@
   font-weight: 300;
 }
 
+.header-nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 25px;
+  font-weight: 500;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.nav-link.active {
+  background: rgba(255, 255, 255, 0.25);
+  font-weight: 600;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
 @media (max-width: 768px) {
   .app-title {
     font-size: 2.5rem;
@@ -38,5 +81,15 @@
 
   .header-container {
     padding: 0 1rem;
+  }
+
+  .header-nav {
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .nav-link {
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
   }
 }
