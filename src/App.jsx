@@ -43,6 +43,14 @@ function App() {
     }
   };
 
+  const handleEmployeeUpdate = (updatedEmployee) => {
+    setEmployees(prev => 
+      prev.map(emp => 
+        emp.id === updatedEmployee.id ? updatedEmployee : emp
+      )
+    );
+  };
+
   if (loading) {
     return (
       <div className="app">
@@ -76,7 +84,7 @@ function App() {
             <Routes>
               <Route 
                 path="/" 
-                element={<PersonList employees={employees} />} 
+                element={<PersonList employees={employees} onEmployeeUpdate={handleEmployeeUpdate} />} 
               />
               <Route 
                 path="/add-employee" 

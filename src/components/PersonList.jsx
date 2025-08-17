@@ -1,7 +1,7 @@
 import PersonCard from './PersonCard';
 import './PersonList.css';
 
-const PersonList = ({ employees }) => {
+const PersonList = ({ employees, onEmployeeUpdate }) => {
   if (!employees || employees.length === 0) {
     return (
       <div className="person-list-empty">
@@ -35,6 +35,7 @@ const PersonList = ({ employees }) => {
             location={employee.location}
             department={employee.department}
             skills={employee.skills}
+            onEmployeeUpdate={onEmployeeUpdate}
           />
         ))}
       </div>
