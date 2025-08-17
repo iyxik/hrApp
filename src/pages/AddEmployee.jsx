@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AddEmployee.css';
 
 const AddEmployee = ({ onAddEmployee }) => {
   const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -26,12 +29,13 @@ const AddEmployee = ({ onAddEmployee }) => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitError(null);
     
     // Build new employee object
     const newEmployee = {
-      id: Date.now(), // Unique ID using timestamp
       name: formData.name,
       title: formData.title,
       salary: parseInt(formData.salary) || 0,
@@ -44,11 +48,20 @@ const AddEmployee = ({ onAddEmployee }) => {
       skills: formData.skills.split(',').map(skill => skill.trim()).filter(skill => skill)
     };
 
-    // Call the function from props to add the employee
-    onAddEmployee(newEmployee);
-    
-    // Navigate back to employee list
-    navigate('/');
+    try {
+      const result = await onAddEmployee(newEmployee);
+      
+      if (result.success) {
+        // Navigate back to employee list on success
+        navigate('/');
+      } else {
+        setSubmitError(result.error || 'Failed to add employee');
+      }
+    } catch (error) {
+      setSubmitError('An unexpected error occurred');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const animalOptions = [
@@ -69,6 +82,13 @@ const AddEmployee = ({ onAddEmployee }) => {
           <h1 className="form-title">Add New Employee</h1>
           <p className="form-subtitle">Welcome a new team member to the company</p>
         </div>
+
+        {submitError && (
+          <div className="error-message">
+            <span className="error-icon">⚠️</span>
+            {submitError}
+          </div>
+        )}
 
         <form onSubmit={handleSubmit} className="employee-form">
           <div className="form-grid">
@@ -231,8 +251,9 @@ const AddEmployee = ({ onAddEmployee }) => {
             <button
               type="submit"
               className="btn btn-primary"
+              disabled={isSubmitting}
             >
-              Add Employee
+              {isSubmitting ? 'Adding Employee...' : 'Add Employee'}
             </button>
           </div>
         </form>
